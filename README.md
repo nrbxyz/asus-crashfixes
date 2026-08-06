@@ -6,9 +6,12 @@
 # Right-click PowerShell -> Run as administrator
 .\1-FIX.ps1              # fixes it now
 .\2-MAKE-PERMANENT.ps1   # stops Windows undoing it later
+.\3-UNDO-EVERYTHING.ps1  # changed your mind? puts everything back
 ```
 
 It costs battery life and fan noise. It is containment, not a repair.
+
+**Nervous about running scripts off the internet?** Fair. Everything here is plain readable PowerShell — no binaries, no network access, no telemetry, nothing touching your files or security settings. Every change is a documented Windows power setting, and `3-UNDO-EVERYTHING.ps1` reverses all of it in one go. Read the scripts first; they're short.
 
 ---
 
@@ -33,6 +36,7 @@ They are not separate problems. They're one fault with many faces. See [SYMPTOMS
 |---|---|
 | **`1-FIX.ps1`** | The fix. Blocks deep C-states on AC and battery, across every power plan, then verifies it worked. Undo: `.\1-FIX.ps1 -Revert` |
 | **`2-MAKE-PERMANENT.ps1`** | Makes it survive Windows updates and power-plan switches. Self-contained. Undo: `.\2-MAKE-PERMANENT.ps1 -Remove` |
+| **`3-UNDO-EVERYTHING.ps1`** | Reverses everything in this repo — restores default idle behaviour on every plan and removes the guard. Add `-All` to also revert the logging/dump changes. |
 | `optional-crash-evidence.ps1` | Only if you want to confirm the diagnosis yourself. Preserves crash evidence that otherwise deletes itself. |
 | `optional-power-logger.ps1` | Deep debugging. Per-second power telemetry, flushed to disk so it survives an instant power-off. |
 | [SYMPTOMS.md](SYMPTOMS.md) | Every symptom explained, and everything that does **not** fix it. |

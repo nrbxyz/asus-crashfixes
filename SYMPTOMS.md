@@ -200,3 +200,25 @@ that ASUS ships but hides. It can be flipped with setup_var from a UEFI shell
 WITHOUT modifying or reflashing the BIOS, which would disable deep C-states at
 firmware level instead of OS level. Risk: a wrong offset can soft-brick until a
 CMOS clear. Not yet tested.
+
+
+## UPDATE: firmware-level fix attempt — NEGATIVE RESULT (worth knowing before you try)
+
+We extracted the hidden AMD CBS options from the GA503RW BIOS (UEFIExtract + IFRExtractor)
+and flipped them with setup_var.efi from a UEFI shell:
+
+    AmdSetup (GUID 3A997502-647A-4C82-998E-52EF9486A247)
+      offset 0x24  Global C-state Control  -> 0x0 (Disabled)
+      offset 0x4C  DF Cstates              -> 0x0 (Disabled)
+
+Both writes verified. ACPI then exposed only C1 (C2/C3 residency measured 0.0%).
+
+**It still crashed** — twice, within minutes, on battery + iGPU idle (0x7F double fault,
+then 0xA in KiUpdateSpeculationControl during a context switch). On an affected board,
+even bare C1 clock-gating at battery voltage corrupts CPU state. There is no shallower
+firmware knob, and the desktop "Power Supply Idle Control" option does not exist in this
+mobile firmware.
+
+Conclusion: don't bother with BIOS/NVRAM modding for this. The Windows-level block in
+1-FIX.ps1 (idle disable + min 100%) remains the only working software containment, and
+the only true cure is board-level power-delivery repair.

@@ -36,6 +36,7 @@ They are not separate problems. They're one fault with many faces. See [SYMPTOMS
 |---|---|
 | **`1-FIX.ps1`** | The fix. Blocks deep C-states on AC and battery, across every power plan, then verifies it worked. Undo: `.\1-FIX.ps1 -Revert` |
 | **`2-MAKE-PERMANENT.ps1`** | Makes it survive Windows updates and power-plan switches. Self-contained. Undo: `.\2-MAKE-PERMANENT.ps1 -Remove` |
+| `2-MAKE-PERMANENT-MODE-AWARE.ps1` | Alternative to step 2. Same guard, but allows deep C-states when plugged in **and** in Ultimate/dGPU mode (always blocked on battery). Less heat and fan noise on AC, slightly less protection. Undo: `.\2-MAKE-PERMANENT-MODE-AWARE.ps1 -Remove` |
 | **`3-UNDO-EVERYTHING.ps1`** | Reverses everything in this repo — restores default idle behaviour on every plan and removes the guard. Add `-All` to also revert the logging/dump changes. |
 | `optional-crash-evidence.ps1` | Only if you want to confirm the diagnosis yourself. Preserves crash evidence that otherwise deletes itself. |
 | `optional-power-logger.ps1` | Deep debugging. Per-second power telemetry, flushed to disk so it survives an instant power-off. |
